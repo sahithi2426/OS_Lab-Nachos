@@ -6,11 +6,5 @@
  */
 
 #include "syscall.h"
-#define stdout 1
 
-int main() {
-
-	Write("I am the Child Process\n",25,stdout);
-
-       	PrintNum(ReadNum()); 
-}
+int main() { PrintNum(ReadNum()); }

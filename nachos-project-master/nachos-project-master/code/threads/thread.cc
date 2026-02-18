@@ -45,6 +45,7 @@ Thread::Thread(char *threadName, bool _has_dynamic_name /*=false*/) {
                                  // of machine registers
     }
     space = NULL;
+    priority = 1;
 }
 
 //----------------------------------------------------------------------
@@ -409,3 +410,14 @@ void Thread::SelfTest() {
     kernel->currentThread->Yield();
     SimpleThread(0);
 }
+
+void Thread::SetPriority(int p)
+{
+    priority = p;
+}
+
+int Thread::GetPriority()
+{
+    return priority;
+}
+

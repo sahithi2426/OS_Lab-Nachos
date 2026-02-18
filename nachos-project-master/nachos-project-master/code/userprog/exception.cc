@@ -159,8 +159,7 @@ void handle_SC_Abs() {
 
     /* Process SysAdd Systemcall*/
     int result;
-    result = SysAbs(
-        /* int op1 */ (int)kernel->machine->ReadRegister(4));
+    result = SysAbs( (int)kernel->machine->ReadRegister(4));
 
     DEBUG(dbgSys, "Abs returning with " << result << "\n");
     /* Prepare Result */
@@ -437,8 +436,6 @@ void ExceptionHandler(ExceptionType which) {
                     return handle_SC_Halt();
                 case SC_Add:
                     return handle_SC_Add();
-		case SC_Abs:
-		    return handle_SC_Abs();
                 case SC_ReadNum:
                     return handle_SC_ReadNum();
                 case SC_PrintNum:
@@ -479,6 +476,8 @@ void ExceptionHandler(ExceptionType which) {
                     return handle_SC_Signal();
                 case SC_GetPid:
                     return handle_SC_GetPid();
+		case SC_Abs:
+		    return handle_SC_Abs();
                 /**
                  * Handle all not implemented syscalls
                  * If you want to write a new handler for syscall:

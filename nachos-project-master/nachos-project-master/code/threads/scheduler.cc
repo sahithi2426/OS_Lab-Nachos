@@ -49,13 +49,55 @@ Scheduler::~Scheduler() { delete readyList; }
 //	"thread" is the thread to be put on the ready list.
 //----------------------------------------------------------------------
 
-void Scheduler::ReadyToRun(Thread *thread) {
+// void Scheduler::ReadyToRun(Thread *thread) {
+//     ASSERT(kernel->interrupt->getLevel() == IntOff);
+//     DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
+
+//     thread->setStatus(READY);
+//     //readyList->Append(thread);
+
+//     ListIterator<Thread *> it(readyList);
+//     Thread *t;
+
+//     readyList->SortedInsert((void *)thread, -thread->priority);
+// }
+
+void Scheduler::ReadyToRun(Thread *thread)
+{
     ASSERT(kernel->interrupt->getLevel() == IntOff);
     DEBUG(dbgThread, "Putting thread on ready list: " << thread->getName());
 
     thread->setStatus(READY);
-    readyList->Append(thread);
+
+    // Temporary list
+    List<Thread *> tempList;
+
+    bool inserted = false;
+
+    // Reorder by priority
+    while (!readyList->IsEmpty()) {
+        Thread *t = readyList->RemoveFront();
+
+        // Higher priority first
+        if (!inserted && thread->priority > t->priority) {
+            tempList.Append(thread);
+            inserted = true;
+        }
+
+        tempList.Append(t);
+    }
+
+    // If not inserted yet, put at end
+    if (!inserted) {
+        tempList.Append(thread);
+    }
+
+    // Copy back to readyList
+    while (!tempList.IsEmpty()) {
+        readyList->Append(tempList.RemoveFront());
+    }
 }
+
 
 //----------------------------------------------------------------------
 // Scheduler::FindNextToRun

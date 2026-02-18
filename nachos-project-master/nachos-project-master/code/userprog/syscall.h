@@ -35,7 +35,6 @@
 #define SC_ThreadExit 14
 #define SC_ThreadJoin 15
 
-#define SC_Abs 41
 #define SC_Add 42
 #define SC_ReadNum 43
 #define SC_PrintNum 44
@@ -49,6 +48,7 @@
 #define SC_Wait 52
 #define SC_Signal 53
 #define SC_GetPid 54
+#define SC_Abs 55
 
 #ifndef IN_ASM
 
@@ -71,7 +71,7 @@ void Halt();
 
 int Add(int op1, int op2);
 
-unsigned int Abs(int op1);
+int Abs(int op);
 
 int ReadNum();
 
@@ -180,6 +180,7 @@ int Close(OpenFileId id);
 // Success: 0 - Failed: -1
 // Ham tao 1 semaphore voi ten semaphore
 int CreateSemaphore(char *name, int semval);
+
 
 int Wait(char *name);
 

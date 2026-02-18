@@ -10,16 +10,19 @@
 
 #ifndef __USERPROG_KSYSCALL_H__
 #define __USERPROG_KSYSCALL_H__
-#define INT32_MIN 0
+
 #include "kernel.h"
 #include "synchconsole.h"
 #include "ksyscallhelper.h"
 #include <stdlib.h>
 
+#define INT32_MIN 0
+
 void SysHalt() { kernel->interrupt->Halt(); }
 
 int SysAdd(int op1, int op2) { return op1 + op2; }
-int SysAbs(int op1) { return (op1>0 ? op1 : -(op1)); }
+
+int SysAbs(int op) { return (op > 0 ? op : -(op)); }
 
 int SysReadNum() {
     readUntilBlank();

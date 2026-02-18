@@ -17,6 +17,7 @@
 #include "synchconsole.h"
 #include "synchdisk.h"
 #include "post.h"
+#include "thread.h"
 
 #define MAX_PROCESS 10
 //----------------------------------------------------------------------
@@ -145,24 +146,58 @@ Kernel::~Kernel() {
 //      Test threads, semaphores, synchlists
 //----------------------------------------------------------------------
 
-void Kernel::ThreadSelfTest() {
-    Semaphore *semaphore;
-    SynchList<int> *synchList;
+// void Kernel::ThreadSelfTest() {
+//     Semaphore *semaphore;
+//     SynchList<int> *synchList;
 
-    LibSelfTest();  // test library routines
+//     LibSelfTest();  // test library routines
 
-    currentThread->SelfTest();  // test thread switching
+//     currentThread->SelfTest();  // test thread switching
 
-    // test semaphore operation
-    semaphore = new Semaphore("test", 0);
-    semaphore->SelfTest();
-    delete semaphore;
+//     // test semaphore operation
+//     semaphore = new Semaphore("test", 0);
+//     semaphore->SelfTest();
+//     delete semaphore;
 
-    // test locks, condition variables
-    // using synchronized lists
-    synchList = new SynchList<int>;
-    synchList->SelfTest(9);
-    delete synchList;
+//     // test locks, condition variables
+//     // using synchronized lists
+//     synchList = new SynchList<int>;
+//     synchList->SelfTest(9);
+//     delete synchList;
+// }
+
+void PriorityThread(void *arg)
+{
+    int which = (int)(long)arg;
+
+    for (int i = 0; i < 5; i++) {
+        printf("Thread %d running (priority = %d)\n",
+               which, kernel->currentThread->priority);
+
+        kernel->currentThread->Yield();
+    }
+}
+
+void Kernel::ThreadSelfTest()
+{
+    printf("=== THREAD TEST STARTED ===\n");
+
+    Thread *t1 = new Thread((char*)"Thread 1");
+    Thread *t2 = new Thread((char*)"Thread 2");
+    Thread *t3 = new Thread((char*)"Thread 3");
+
+    t1->SetPriority(2);   // Low
+    t2->SetPriority(8);   // High
+    t3->SetPriority(5);   // Medium
+
+    t1->Fork(PriorityThread, (void*)1);
+    t2->Fork(PriorityThread, (void*)2);
+    t3->Fork(PriorityThread, (void*)3);
+
+    // Give CPU to other threads
+    for (int i = 0; i < 20; i++) {
+        kernel->currentThread->Yield();
+    }
 }
 
 //----------------------------------------------------------------------

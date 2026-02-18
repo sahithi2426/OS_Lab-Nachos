@@ -127,6 +127,12 @@ halt: halt.o start.o
 	$(LD) $(LDFLAGS) start.o halt.o -o halt.coff
 	$(COFF2NOFF) halt.coff halt
 
+add.o: add.c
+	$(CC) $(CFLAGS) -c add.c
+
+add: add.o start.o
+	$(LD) $(LDFLAGS) start.o add.o -o add.coff
+	$(COFF2NOFF) add.coff add
 
 abs.o: abs.c
 	$(CC) $(CFLAGS) -c abs.c
@@ -134,14 +140,6 @@ abs.o: abs.c
 abs: abs.o start.o
 	$(LD) $(LDFLAGS) start.o abs.o -o abs.coff
 	$(COFF2NOFF) abs.coff abs
-
-
-add.o: add.c
-	$(CC) $(CFLAGS) -c add.c
-
-add: add.o start.o
-	$(LD) $(LDFLAGS) start.o add.o -o add.coff
-	$(COFF2NOFF) add.coff add
 
 shell.o: shell.c
 	$(CC) $(CFLAGS) -c shell.c

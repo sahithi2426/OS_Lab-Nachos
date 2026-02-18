@@ -23,8 +23,9 @@ int main() {
         buffer[--i] = '\0';
 
         if (i > 0) {
-            newProc = Exec(buffer);
-            Join(newProc);
-        }
+		newProc = Exec(buffer);
+            	Join(newProc);
+	}
+
     }
 }

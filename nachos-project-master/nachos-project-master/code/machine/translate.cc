@@ -27,9 +27,7 @@
 //
 // Copyright (c) 1992-1996 The Regents of the University of California.
 // All rights reserved.  See copyright.h for copyright notice and limitation
-// ofAssertion failed: line 200 file ../machine/translate.cc
-//Aborted (core dumped)
-//ssl20@CSE-SSL-20:~/Document liability and disclaimer of warranty provisions.
+// of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
 #include "main.h"
